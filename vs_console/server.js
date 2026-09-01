@@ -25,10 +25,12 @@ app.post('/api/start', (req, res) => {
 
         console.log("Server Trying to Start...")
 
+        return res.json({ success: true, message: "Server starting..." });
+
     }
     catch (e) {
         console.error(e)
-        return res.status(500)
+        return res.status(500).json({ error: e.message });
     }
 
 })
