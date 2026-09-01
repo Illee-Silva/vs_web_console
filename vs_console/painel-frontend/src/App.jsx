@@ -6,13 +6,29 @@ import './App.css'
 import { FaPlay, FaStop, FaRedo } from 'react-icons/fa';
 
 function App() {
-  const [status, setStatus] = useState('')
   const [command, setCommand] = useState('')
+  const pcip = '100.125.83.74';
 
+  // Stats Variables
+  const [status, setStatus] = useState('')
+  const [version, setVersion] = useState('')
+  const [uptime, setUptime] = useState('')
+  const [playerslastonline, setPlayersLastOnline] = useState('')
+  const [playersonline, setPlayersOnline] = useState('')
+  const [memoryusagemanaged, setMemoryUsageManaged] = useState('')
+  const [memoryusagetotal, setMemoryUSageTotal] = useState('')
+  const [last2savgticktime, setLast2savgTickTime] = useState('')
+  const [last2stickpers, setLast2sTickPers] = useState('')
+  const [last10ticks, setLast10Ticks] = useState('')
+  const [loadedchunks, setLoadedChunks] = useState('')
+  const [loadedentities, setLoadedEntities] = useState('')
+  const [networktcp, setNetworkTCP] = useState('')
+  const [networkudp, setNetworkUDP] = useState('')
 
   const inputRef = useRef(null)
 
   useEffect(() => {
+
     const listenkeyboard = (e) => {
       if (e.key === '/' && document.activeElement !== inputRef.current){
 
@@ -31,6 +47,26 @@ function App() {
 
   }, [])
 
+  useEffect(() =>{
+
+// Implement in the future!
+
+  })
+
+  const startServer = async () => {
+    
+    try{
+      const res = await fetch(`http://${pcip}/api/start`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'}
+      });
+      
+    }
+    catch (e){
+      console.error(e);
+    }
+
+  }
 
   return (
     <div className='main-container'>
@@ -40,8 +76,11 @@ function App() {
         <h2 className='btbartittle'>Server Dashboard</h2>
 
         <div className='btgroup'>
-          <button className='bt start'>
+          <button className='bt start'
+            onClick={startServer}
+          >
             <FaPlay />
+
           </button>
 
           <button className='bt stop'>
@@ -63,118 +102,7 @@ function App() {
             Terminal Output
           </div>
           <div className='console-window-content'>
-
-          <p>[14:00:01] Servidor Vintage Story iniciado...</p>
-          <p>[14:00:01] O Player thyfnn se conectou!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          <p>[14:00:01] O servidor está sobrecarregado!</p>
-          
-          
+            <p>Console Ready! you may start the server clicking on the play button!</p>
           </div>
 
           <div className='console-input-bar'>
@@ -186,7 +114,7 @@ function App() {
               placeholder='Type any command...'
               value = {command}
               onChange={(e) => setCommand(e.target.value)}
-               onKeyDown={(e) => e.key === 'Enter' && setCommand('')}
+              onKeyDown={(e) => e.key === 'Enter' && setCommand('')}
             />
           </div>
 
@@ -194,13 +122,10 @@ function App() {
 
         <div className='info-window'>
           <div className='info-window tittle'>
-            Status
+            Stats
           </div>
           <div className='info-window content'>
-            <p><strong>Estado:</strong> Online</p>
-            <p><strong>CPU:</strong> 15%</p>
-            <p><strong>RAM:</strong> 2.4 GB</p>
-            <p><strong>Jogadores:</strong> 3/16</p>
+            
           </div>
 
         </div>
