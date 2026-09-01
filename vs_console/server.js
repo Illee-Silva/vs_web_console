@@ -25,6 +25,17 @@ app.post('/api/start', (req, res) => {
 
         console.log("Server Trying to Start...")
 
+        server_process.on('error', (err) => {
+            console.error(`Erro ao iniciar o processo: ${err.message}`);
+            server_process = null;
+        });
+
+        // Captura quando o servidor do jogo fechar/morrer
+        server_process.on('close', (code) => {
+            console.log(`Servidor fechado com código ${code}`);
+            server_process = null;
+        });
+
         return res.json({ success: true, message: "Server starting..." });
 
     }
