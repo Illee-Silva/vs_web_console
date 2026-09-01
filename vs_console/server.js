@@ -20,7 +20,8 @@ app.post('/api/start', (req, res) => {
     try{
 
         server_process = spawn('dotnet', ['VintagestoryServer.dll', '--dataPath', config_datapath], {
-            cwd: config_serverpath
+            cwd: config_serverpath,
+            stdio: 'inherit'
         });
 
         console.log("Server Trying to Start...")
