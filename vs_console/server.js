@@ -23,6 +23,8 @@ app.post('/api/start', (req, res) => {
             cwd: config_serverpath
         });
 
+        console.log("Server Trying to Start...")
+
     }
     catch (e) {
         console.error(e)
