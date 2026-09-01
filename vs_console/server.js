@@ -1,7 +1,9 @@
 const express = require("express");
 const {spawn} = require("child_process");
+const cors = require("cors")
 
 const app = express();
+app.use(cors())
 app.use(express.json())
 
 let server_process = null;

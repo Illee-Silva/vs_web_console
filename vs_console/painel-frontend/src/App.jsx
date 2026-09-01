@@ -56,7 +56,7 @@ function App() {
   const startServer = async () => {
     
     try{
-      const res = await fetch(`http://${pcip}/api/start`, {
+      const res = await fetch(`http://${pcip}:3001/api/start`, {
         method: 'POST',
         headers: {'Content-Type':'application/json'}
       });
