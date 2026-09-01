@@ -25,6 +25,10 @@ app.post('/api/start', (req, res) => {
 
         console.log("Server Trying to Start...")
 
+        server_process.stderr.on('data', (data) => {
+            console.error(`Erro do DotNet: ${data}`);
+        });
+
         server_process.on('error', (err) => {
             console.error(`Erro ao iniciar o processo: ${err.message}`);
             server_process = null;
