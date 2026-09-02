@@ -90,6 +90,35 @@ function App() {
 
   }
 
+  const sendCommandToServer = async (userCommand) => {
+
+    if (!userCommand.trim()) return;
+
+    try{
+      const response = await fetch(`https://${pcip}:3001/api/execute`, {
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({command: userCommand})
+      })
+
+      const data = await response.json();
+
+      if (!response.ok) {
+            alert(`Erro: ${data.error}`);
+            return;
+        }
+
+        console.log("Sucesso:", data.message);
+
+    }
+    catch{
+      console.error("Erro na requisição:", error);
+    }
+
+  }
+
   return (
     <div className='main-container'>
 
@@ -111,7 +140,8 @@ function App() {
             <FaStop />
           </button>
 
-          <button className='bt redo'>
+          <button className='bt redo'
+          >
             <FaRedo />
           </button>
 
@@ -138,7 +168,12 @@ function App() {
               placeholder='Type any command...'
               value = {command}
               onChange={(e) => setCommand(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && setCommand('')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter'){
+                  sendCommandToServer(command);
+                  setCommand('');
+                }
+              }}
             />
           </div>
 

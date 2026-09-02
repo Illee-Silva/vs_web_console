@@ -36,7 +36,7 @@ app.post('/api/start', (req, res) => {
         }
 
         server_process.on('close', (code)=> {
-            console.log('The server has closed. ${code}')
+            console.log(`The server has closed. ${code}`)
             server_process = null;  
         })
 
@@ -62,23 +62,57 @@ app.post('/api/stop', (req, res) => {
     try{
 
         if (server_process === null){
-            return res.status(400).json({error: 'server is already closed!'})
+            return res.status(400).json({error: 'server is already closed!'});
         }
 
         if(server_process.stdin){
-            server_process.stdin.write('/stop\n')
+            server_process.stdin.write('/stop\n');
         } else{
-            return res.status(500)
+            return res.status(500);
         }
 
         return res.json({ success: true, message: "Comando /stop enviado. O servidor está salvando e desligando..." });
         
     }
     catch(e){
-        console.error("Erro ao tentar enviar o comando", e)
+        console.error("Erro ao tentar enviar o comando", e);
         return res.status(500);
     }
 })  
+
+app.post('/api/execute', (req, res) => {
+
+    
+    if(server_process === null){
+        return res.status(400).json({error: 'server is not online. cant execute command!'});
+    }
+
+    const {command} = req.body;
+
+    if (!command){
+        return res.status(400).json({error: "command is empty"});
+    }
+
+
+    try{
+
+        console.log('sending command')
+
+        if(server_process.stdin){
+            server_process.stdin.write(`${command}\n`);
+            return res.json({ success: true, message: `Comando "${command}" enviado com sucesso!` });
+        }
+        else{
+            return res.status(500).json({ error: 'Terminal do servidor inacessível.' });
+        }
+
+    }
+    catch (e) {
+        console.error("Erro ao enviar comando:", e);
+        return res.status(500).json({ error: 'Erro ao processar o comando.' });
+    }
+
+})
 
 
 app.listen(3001, () => {
