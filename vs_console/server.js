@@ -35,17 +35,13 @@ app.post('/api/start', (req, res) => {
             console.log(`Received Chunck ${data}`);
         })
 
-        server_process.on('error', (err) => {
-            console.error(`Erro ao iniciar o processo: ${err.message}`);
-            server_process = null;
-        });
-
         return res.json({ success: true, message: "Server starting..." });
 
     }
     catch (e) {
         console.error(e)
-        return res.status(500).json({ error: e.message });
+        return res.status(503).json({error: "caralho, teste dessa poha"})
+        // return res.status(500).json({ error: e.message });
     }
 
 })
