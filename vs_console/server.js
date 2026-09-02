@@ -1,6 +1,7 @@
 const express = require("express");
 const {spawn} = require("child_process");
-const cors = require("cors")
+const cors = require("cors");
+const { error } = require("console");
 
 const app = express();
 app.use(cors())
@@ -13,29 +14,29 @@ let config_serverpath = '/home/vintageserver/server'
 let config_datapath = '/home/vintageserver/data'
 
 app.post('/api/start', (req, res) => {
+
     if (server_process !== null){
         return res.status(400).json({error: 'Server is already Running!'})
     }
 
     try{
+        
+        console.log("Server Trying to Start...")
 
         server_process = spawn('dotnet', ['VintagestoryServer.dll', '--dataPath', config_datapath], {
             cwd: config_serverpath,
             stdio: 'inherit'
         });
 
-        console.log("Server Trying to Start...")
-
-        server_process.stderr.on('data', (data) => {
-            console.error(`Erro do DotNet: ${data}`);
-        });
+        server_process.stdout.on('data', (data) => {
+            console.log(`Received Chunck ${data}`);
+        })
 
         server_process.on('error', (err) => {
             console.error(`Erro ao iniciar o processo: ${err.message}`);
             server_process = null;
         });
 
-        // Captura quando o servidor do jogo fechar/morrer
         server_process.on('close', (code) => {
             console.log(`Servidor fechado com código ${code}`);
             server_process = null;
@@ -50,6 +51,17 @@ app.post('/api/start', (req, res) => {
     }
 
 })
+
+app.post('/api/stop', (req, res) => {
+
+    if (server_process == null){
+        return res.status(400).json({error: 'server is already closed!'})
+    }
+
+    server_process
+
+})
+
 
 app.listen(3001, () => {
     console.log("API rodando na porta 3001");
