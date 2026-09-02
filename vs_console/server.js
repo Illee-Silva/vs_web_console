@@ -29,16 +29,14 @@ app.post('/api/start', (req, res) => {
         });
 
         server_process.stdout.on('data', (data) => {
+            if (data == null){
+                data = "null"
+            }
             console.log(`Received Chunck ${data}`);
         })
 
         server_process.on('error', (err) => {
             console.error(`Erro ao iniciar o processo: ${err.message}`);
-            server_process = null;
-        });
-
-        server_process.on('close', (code) => {
-            console.log(`Servidor fechado com código ${code}`);
             server_process = null;
         });
 
