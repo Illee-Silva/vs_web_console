@@ -68,6 +68,28 @@ function App() {
 
   }
 
+  const stopServer = async () => {
+
+    try {
+
+      const response = await fetch(`http://${pcip}:3001/api/stop`, { method: 'POST' });
+        const data = await response.json();
+        
+        if (!response.ok) {
+            console.error("Erro:", data.error);
+            alert(data.error); 
+            return;
+        }
+
+        console.log("Sucesso:", data.message);
+
+    }
+    catch {
+      console.error("Falha ao desligar:", error);
+    }
+
+  }
+
   return (
     <div className='main-container'>
 
@@ -83,7 +105,9 @@ function App() {
 
           </button>
 
-          <button className='bt stop'>
+          <button className='bt stop'
+            onClick={stopServer}
+          >
             <FaStop />
           </button>
 

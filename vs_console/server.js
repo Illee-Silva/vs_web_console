@@ -35,29 +35,52 @@ app.post('/api/start', (req, res) => {
             });
         }
 
+        server_process.on('close', (code)=> {
+            console.log('The server has closed. ${code}')
+            server_process = null;  
+        })
+
+        if (server_process.stderr) {
+            server_process.stderr.on('data', (data) => {
+                console.error(`${data.toString()}`);
+            });
+        }
+        
         return res.json({ success: true, message: "Server starting..." });
 
     }
 
     catch (e) {
         console.error(e)
-        return res.status(500).json({error: "caralho, teste dessa poha"})
-        // return res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 
 })
 
 app.post('/api/stop', (req, res) => {
 
-    if (server_process == null){
-        return res.status(400).json({error: 'server is already closed!'})
+    try{
+
+        if (server_process === null){
+            return res.status(400).json({error: 'server is already closed!'})
+        }
+
+        if(server_process.stdin){
+            server_process.stdin.write('/stop\n')
+        } else{
+            return res.status(500)
+        }
+
+        return res.json({ success: true, message: "Comando /stop enviado. O servidor está salvando e desligando..." });
+        
     }
-
-    server_process
-
-})
+    catch(e){
+        console.error("Erro ao tentar enviar o comando", e)
+        return res.status(500);
+    }
+})  
 
 
 app.listen(3001, () => {
-    console.log("API rodando na porta 3001");
+    console.log("API is UP and running at: 3001");
 });
