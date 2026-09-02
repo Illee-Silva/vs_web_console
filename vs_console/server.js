@@ -28,7 +28,7 @@ function broadcastLog(text){
         }
 
         log_clients.forEach(client => {
-            client.res.write(`data: ${JSON.stringyfy({type: 'new', data:line})}\n\n`)
+            client.res.write(`data: ${JSON.stringify({type: 'new', data:line})}\n\n`)
         });
 
     });
