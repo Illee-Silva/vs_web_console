@@ -84,7 +84,7 @@ function App() {
         console.log("Sucesso:", data.message);
 
     }
-    catch {
+    catch (error) {
       console.error("Falha ao desligar:", error);
     }
 
@@ -95,7 +95,7 @@ function App() {
     if (!userCommand.trim()) return;
 
     try{
-      const response = await fetch(`https://${pcip}:3001/api/execute`, {
+      const response = await fetch(`http://${pcip}:3001/api/execute`, {
         method: 'POST',
         headers: {
           'Content-Type':'application/json'
@@ -113,7 +113,7 @@ function App() {
         console.log("Sucesso:", data.message);
 
     }
-    catch{
+    catch(error) {
       console.error("Erro na requisição:", error);
     }
 
