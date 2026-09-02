@@ -19,7 +19,7 @@ let log_clients = [];
 const max_logs = 2000;
 
 function broadcastLog(text){
-    const lines = text.split('\n').filter(line.trim() !== '');
+    const lines = text.split('\n').filter(line => line.trim() !== '');
 
     lines.forEach(line => {
         server_logs.push(line);
