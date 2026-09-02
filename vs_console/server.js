@@ -24,23 +24,24 @@ app.post('/api/start', (req, res) => {
         console.log("Server Trying to Start...")
 
         server_process = spawn('dotnet', ['VintagestoryServer.dll', '--dataPath', config_datapath], {
-            cwd: config_serverpath,
-            stdio: 'inherit'
+            cwd: config_serverpath
         });
 
-        server_process.stdout.on('data', (data) => {
-            if (data == null){
-                data = "null"
-            }
-            console.log(`Received Chunck ${data}`);
-        })
+        if (server_process.stdout) {
+            server_process.stdout.on('data', (data) => {
+
+                console.log(`${data.toString()}`);
+
+            });
+        }
 
         return res.json({ success: true, message: "Server starting..." });
 
     }
+
     catch (e) {
         console.error(e)
-        return res.status(503).json({error: "caralho, teste dessa poha"})
+        return res.status(500).json({error: "caralho, teste dessa poha"})
         // return res.status(500).json({ error: e.message });
     }
 
