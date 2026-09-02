@@ -9,6 +9,9 @@ function App() {
   const [command, setCommand] = useState('')
   const pcip = '100.125.83.74';
 
+  const [logs, setLogs] = useState([]);
+  const consoleEndRef = useRef(null);
+
   // Stats Variables
   const [status, setStatus] = useState('')
   const [version, setVersion] = useState('')
@@ -49,9 +52,36 @@ function App() {
 
   useEffect(() =>{
 
-// Implement in the future!
+    const eventSource = new EventSource(`http://${pcip}:3001/api/logs`);
 
-  })
+    eventSource.onmessage = (event) => {
+      const mensagem = JSON.parse(event.data);
+
+      if (mensagem.type === 'history') {
+        // Carrega as 1000 linhas de uma vez
+        setLogs(mensagem.data);
+      } else if (mensagem.type === 'new') {
+        // Adiciona a linha nova e garante o limite de 1000 no front também
+        setLogs(prevLogs => {
+          const novosLogs = [...prevLogs, mensagem.data];
+          if (novosLogs.length > 1000) novosLogs.shift();
+          return novosLogs;
+        });
+      }
+    };
+
+    return () => {
+      eventSource.close(); // Fecha a conexão se o componente desmontar
+    };
+
+  }, []);
+
+  useEffect(() => {
+  // Sempre que 'logs' mudar, joga a barra de rolagem pro final
+  if (consoleEndRef.current) {
+    consoleEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+}, [logs]);
 
   const startServer = async () => {
     
@@ -156,7 +186,16 @@ function App() {
             Terminal Output
           </div>
           <div className='console-window-content'>
-            <p>Console Ready! you may start the server clicking on the play button!</p>
+            {logs.length === 0 ? (
+              <p>Console Ready! you may start the server clicking on the play button!</p>
+            ) : (
+              logs.map((linha, index) => (
+                <div key={index} style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+                  {linha}
+                </div>
+              ))
+            )}
+            <div ref={consoleEndRef} />
           </div>
 
           <div className='console-input-bar'>

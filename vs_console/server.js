@@ -13,6 +13,49 @@ let server_process = null;
 let config_serverpath = '/home/vintageserver/server'
 let config_datapath = '/home/vintageserver/data'
 
+// Logs Logic
+let server_logs = [];
+let log_clients = [];
+const max_logs = 2000;
+
+function broadcastLog(text){
+    const lines = text.split('\n').filter(line.trim() !== '');
+
+    lines.forEach(line => {
+        server_logs.push(line);
+        if (server_logs.length > max_logs){
+            server_logs.shift();
+        }
+
+        log_clients.forEach(client => {
+            client.res.write(`data: ${JSON.stringyfy({type: 'new', data:line})}\n\n`)
+        });
+
+    });
+
+        
+}
+
+app.get('/api/logs', (req, res) => {
+    // Cabeçalhos obrigatórios para manter a conexão aberta (SSE)
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    // Manda o histórico das 1000 linhas logo que o painel abre
+    res.write(`data: ${JSON.stringify({ type: 'history', data: server_logs })}\n\n`);
+
+    // Adiciona o cliente na lista de conexões ativas
+    const client = { id: Date.now(), res };
+    log_clients.push(client);
+
+    // Quando o usuário fechar a aba do painel, tira ele da lista
+    req.on('close', () => {
+        log_clients = log_clients.filter(c => c.id !== client.id);
+    });
+});
+
 app.post('/api/start', (req, res) => {
 
     if (server_process !== null){
@@ -31,6 +74,7 @@ app.post('/api/start', (req, res) => {
             server_process.stdout.on('data', (data) => {
 
                 console.log(`${data.toString()}`);
+                broadcastLog(data.toString());
 
             });
         }
@@ -43,6 +87,7 @@ app.post('/api/start', (req, res) => {
         if (server_process.stderr) {
             server_process.stderr.on('data', (data) => {
                 console.error(`${data.toString()}`);
+                broadcastLog(data.toString());
             });
         }
         
@@ -113,6 +158,7 @@ app.post('/api/execute', (req, res) => {
     }
 
 })
+
 
 
 app.listen(3001, () => {
